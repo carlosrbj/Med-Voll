@@ -2,7 +2,6 @@ package com.hsob.MedVoll.model;
 
 import com.hsob.MedVoll.dto.AddressRequest;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

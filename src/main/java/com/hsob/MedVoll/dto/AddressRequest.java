@@ -1,4 +1,25 @@
 package com.hsob.MedVoll.dto;
 
-public record AddressRequest(String cep, String street, String number, String complement, String neighborhood, String city, String state) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
+public record AddressRequest(
+        @NotBlank
+        @Pattern(regexp = "\\d{8}")
+        String cep,
+
+        @NotBlank
+        String street,
+
+        String number,
+        String complement,
+
+        @NotBlank
+        String neighborhood,
+
+        @NotBlank
+        String city,
+
+        @NotBlank
+        String state) {
 }

@@ -1,0 +1,33 @@
+package com.hsob.MedVoll.controller;
+
+import com.hsob.MedVoll.dto.patient.PatientRequest;
+import com.hsob.MedVoll.dto.patient.PatientResponse;
+import com.hsob.MedVoll.service.PatientService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/patients")
+public class PatientController {
+
+    @Autowired
+    private PatientService patientService;
+
+    @PostMapping("/register")
+    @Transactional
+    public ResponseEntity<?> saveNewPatient(@RequestBody @Valid PatientRequest patientRequest){
+        patientService.saveNewpatient(patientRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/listAll")
+    public ResponseEntity<Page<PatientResponse>> getAllPatient(@PageableDefault(size = 10, sort = {"name"}) Pageable pageable){
+        return ResponseEntity.ok(patientService.getAllPatient(pageable));
+    }
+}

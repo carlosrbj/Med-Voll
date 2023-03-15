@@ -1,6 +1,7 @@
-package com.hsob.MedVoll.model;
+package com.hsob.MedVoll.model.doctor;
 
-import com.hsob.MedVoll.dto.DoctorRequest;
+import com.hsob.MedVoll.dto.doctor.DoctorRequest;
+import com.hsob.MedVoll.model.Address;
 import jakarta.persistence.*;
 import lombok.*;
 
