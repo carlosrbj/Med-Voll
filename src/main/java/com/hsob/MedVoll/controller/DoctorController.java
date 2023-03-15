@@ -2,6 +2,7 @@ package com.hsob.MedVoll.controller;
 
 import com.hsob.MedVoll.dto.doctor.DoctorRequest;
 import com.hsob.MedVoll.dto.doctor.DoctorResponse;
+import com.hsob.MedVoll.dto.doctor.UpdateDoctorRequest;
 import com.hsob.MedVoll.service.DoctorsService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,13 @@ public class DoctorController {
         return ResponseEntity.of(Optional.ofNullable(doctorsService.getAllDoctors(pageable)));
     }
 
+
+    @PutMapping("/update")
+    @Transactional
+    public ResponseEntity<?> updateDoctorbyid(@RequestBody @Valid UpdateDoctorRequest updateDoctorRequest){
+        doctorsService.updateDoctorById(updateDoctorRequest);
+        return ResponseEntity.ok().build();
+    }
 
 
 

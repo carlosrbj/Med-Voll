@@ -1,6 +1,7 @@
 package com.hsob.MedVoll.model.doctor;
 
 import com.hsob.MedVoll.dto.doctor.DoctorRequest;
+import com.hsob.MedVoll.dto.doctor.UpdateDoctorRequest;
 import com.hsob.MedVoll.model.Address;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,4 +36,34 @@ public class Doctor {
         this.speciality = doctorRequest.speciality();
         this.address = new Address(doctorRequest.address());
     }
+
+    public void updateInfo(UpdateDoctorRequest updateDoctorRequest) {
+        if (updateDoctorRequest.name() != null) this.name = updateDoctorRequest.name();
+        if (updateDoctorRequest.phone() != null) this.phone = updateDoctorRequest.phone();
+        if (updateDoctorRequest.address() != null) this.address.updateInfo(updateDoctorRequest.address());
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -30,4 +30,14 @@ public class Address {
         this.city = addressRequest.city();
         this.state = addressRequest.state();
     }
+
+    public void updateInfo(AddressRequest address) {
+        if (address.cep() != null) this.cep = address.cep();
+        if (address.street() != null) this.cep = address.street();
+        if (address.number() != null) this.cep = address.number();
+        if (address.complement() != null) this.cep = address.complement();
+        if (address.neighborhood() != null) this.cep = address.neighborhood();
+        if (address.city() != null) this.cep = address.city();
+        if (address.state() != null) this.cep = address.state();
+    }
 }
