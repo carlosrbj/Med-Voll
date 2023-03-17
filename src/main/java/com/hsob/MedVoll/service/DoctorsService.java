@@ -34,6 +34,10 @@ public class DoctorsService {
         var doctor = doctorRepository.getReferenceById(updateDoctorRequest.id());
         doctor.updateInfo(updateDoctorRequest);
     }
+
+    public void deleteDoctorById(Long id) {
+
+    }
 }
 
 
