@@ -29,7 +29,7 @@ public class DoctorController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("listAll")
+    @GetMapping("/listAll")
     public ResponseEntity<Page<DoctorResponse>> getAllDoctors(@PageableDefault(size = 10, sort = {"name"}) Pageable pageable){
         return ResponseEntity.of(Optional.ofNullable(doctorsService.getAllDoctors(pageable)));
     }

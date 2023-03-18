@@ -25,12 +25,12 @@ public class Doctor {
     private String phone;
     private String CRM;
     @Enumerated(EnumType.STRING)
-    private Speciality speciality;
+    private String speciality;
     @Embedded
 //    com o @Embedded o Address fica em uma classe separada, mas na tabela ele considera
 //    como atributos de Doctor
     private Address address;
-    private Status status;
+    private String status;
 
     public Doctor(DoctorRequest doctorRequest) {
         this.name = doctorRequest.name();
@@ -49,7 +49,7 @@ public class Doctor {
     }
 
     public void inactivate() {
-        this.status = INACTIVE;
+        this.status = "INACTIVE";
     }
 }
 

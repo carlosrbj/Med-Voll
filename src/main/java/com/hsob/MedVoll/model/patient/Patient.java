@@ -17,7 +17,7 @@ import static com.hsob.MedVoll.model.Status.ACTIVE;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "patients")
-@Entity(name = "patient")
+@Entity(name = "Patient")
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

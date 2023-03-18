@@ -5,6 +5,7 @@ CREATE TABLE doctors (
    phone VARCHAR(255) NULL,
    crm VARCHAR(255) NULL,
    speciality VARCHAR(255) NULL,
+   status VARCHAR(255) NULL,
    cep VARCHAR(255) NULL,
    street VARCHAR(255) NULL,
    number VARCHAR(255) NULL,

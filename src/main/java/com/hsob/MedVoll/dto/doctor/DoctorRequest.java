@@ -24,13 +24,13 @@ public record DoctorRequest(
         @Pattern(regexp = "\\d{4,6}")
         String CRM,
 
-        @NotNull
-        Speciality speciality,
+        @NotBlank
+        String speciality,
 
         @NotNull
         @Valid
         AddressRequest address,
 
         @NotBlank
-        Status status) {
+        String status) {
 }
