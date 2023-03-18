@@ -43,7 +43,8 @@ public class DoctorController {
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/inactivate/{id}")
+    @Transactional
     public ResponseEntity<?> deleteDoctorById(@PathVariable Long id){
         doctorsService.deleteDoctorById(id);
         return ResponseEntity.ok().build();

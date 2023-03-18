@@ -2,6 +2,7 @@ package com.hsob.MedVoll.service;
 
 import com.hsob.MedVoll.dto.patient.PatientRequest;
 import com.hsob.MedVoll.dto.patient.PatientResponse;
+import com.hsob.MedVoll.dto.patient.UpdatePatientRequest;
 import com.hsob.MedVoll.model.patient.Patient;
 import com.hsob.MedVoll.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,16 @@ public class PatientService {
     }
 
     public Page<PatientResponse> getAllPatient(Pageable pageable) {
-        return patientRepository.findAll(pageable).map(PatientResponse::new);
+        return patientRepository.findAllByStatus(pageable, "ACTIVE").map(PatientResponse::new);
+    }
+
+    public void updatePatientById(UpdatePatientRequest updatePatientRequest) {
+        var patient = patientRepository.getReferenceById(updatePatientRequest.id());
+        patient.updateInfo(updatePatientRequest);
+    }
+
+    public void inactivatePatient(Long id) {
+        var patient = patientRepository.getReferenceById(id);
+        patient.inactivate();
     }
 }

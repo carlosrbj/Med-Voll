@@ -2,6 +2,7 @@ package com.hsob.MedVoll.dto.doctor;
 
 import com.hsob.MedVoll.dto.AddressRequest;
 import com.hsob.MedVoll.model.doctor.Speciality;
+import com.hsob.MedVoll.model.Status;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -28,5 +29,8 @@ public record DoctorRequest(
 
         @NotNull
         @Valid
-        AddressRequest address) {
+        AddressRequest address,
+
+        @NotBlank
+        Status status) {
 }

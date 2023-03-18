@@ -2,6 +2,7 @@ package com.hsob.MedVoll.controller;
 
 import com.hsob.MedVoll.dto.patient.PatientRequest;
 import com.hsob.MedVoll.dto.patient.PatientResponse;
+import com.hsob.MedVoll.dto.patient.UpdatePatientRequest;
 import com.hsob.MedVoll.service.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,19 @@ public class PatientController {
     @GetMapping("/listAll")
     public ResponseEntity<Page<PatientResponse>> getAllPatient(@PageableDefault(size = 10, sort = {"name"}) Pageable pageable){
         return ResponseEntity.ok(patientService.getAllPatient(pageable));
+    }
+
+    @PutMapping("/update")
+    @Transactional
+    public ResponseEntity<?> updatePatientById(@RequestBody @Valid UpdatePatientRequest updatePatientRequest){
+        patientService.updatePatientById(updatePatientRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/inactivate/{id}")
+    @Transactional
+    public ResponseEntity<?> inactivatePatient(@PathVariable Long id){
+        patientService.inactivatePatient(id);
+        return ResponseEntity.ok().build();
     }
 }

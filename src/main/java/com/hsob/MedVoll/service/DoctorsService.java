@@ -27,7 +27,7 @@ public class DoctorsService {
     }
 
     public Page<DoctorResponse> getAllDoctors(Pageable pageable) {
-        return doctorRepository.findAll(pageable).map(DoctorResponse::new);
+        return doctorRepository.findAllByStatus(pageable, "ACTIVE").map(DoctorResponse::new);
     }
 
     public void updateDoctorById(UpdateDoctorRequest updateDoctorRequest) {
@@ -36,7 +36,8 @@ public class DoctorsService {
     }
 
     public void deleteDoctorById(Long id) {
-
+        var doctor = doctorRepository.getReferenceById(id);
+        doctor.inactivate();
     }
 }
 
