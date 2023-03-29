@@ -45,7 +45,7 @@ public class DoctorsService {
 
     public DoctorResponse getDoctorById(Long id) {
         var doctor = doctorRepository.findById(id);
-        return doctor.map(DoctorResponse::new).orElseGet(() -> new DoctorResponse(new Doctor()));
+        return new DoctorResponse(doctor.get());
     }
 }
 
