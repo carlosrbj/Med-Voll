@@ -10,15 +10,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class DoctorsService {
 
     @Autowired
     private DoctorRepository doctorRepository;
 
-    public void saveNewDoctor(DoctorRequest doctorRequest) {
+    public DoctorResponse saveNewDoctor(DoctorRequest doctorRequest) {
         try {
-            doctorRepository.save(new Doctor(doctorRequest));
+            var doctor = new Doctor(doctorRequest);
+            doctorRepository.save(doctor);
+            return new DoctorResponse(doctor);
         } catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
@@ -28,14 +32,20 @@ public class DoctorsService {
         return doctorRepository.findAllByStatus(pageable, "ACTIVE").map(DoctorResponse::new);
     }
 
-    public void updateDoctorById(UpdateDoctorRequest updateDoctorRequest) {
+    public DoctorResponse updateDoctorById(UpdateDoctorRequest updateDoctorRequest) {
         var doctor = doctorRepository.getReferenceById(updateDoctorRequest.id());
         doctor.updateInfo(updateDoctorRequest);
+        return new DoctorResponse(doctor);
     }
 
     public void deleteDoctorById(Long id) {
         var doctor = doctorRepository.getReferenceById(id);
         doctor.inactivate();
+    }
+
+    public DoctorResponse getDoctorById(Long id) {
+        var doctor = doctorRepository.findById(id);
+        return doctor.map(DoctorResponse::new).orElseGet(() -> new DoctorResponse(new Doctor()));
     }
 }
 

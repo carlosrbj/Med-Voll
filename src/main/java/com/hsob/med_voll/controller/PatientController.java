@@ -1,5 +1,6 @@
 package com.hsob.med_voll.controller;
 
+import com.hsob.med_voll.dto.doctor.DoctorResponse;
 import com.hsob.med_voll.dto.patient.PatientRequest;
 import com.hsob.med_voll.dto.patient.PatientResponse;
 import com.hsob.med_voll.dto.patient.UpdatePatientRequest;
@@ -12,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/patients")
@@ -22,9 +24,10 @@ public class PatientController {
 
     @PostMapping("/register")
     @Transactional
-    public ResponseEntity<?> saveNewPatient(@RequestBody @Valid PatientRequest patientRequest){
-        patientService.saveNewpatient(patientRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PatientResponse> saveNewPatient(@RequestBody @Valid PatientRequest patientRequest, UriComponentsBuilder uriBuilder){
+        var patientResponse = patientService.saveNewpatient(patientRequest);
+        var uri = uriBuilder.path("/patients/register/{id}").buildAndExpand(patientResponse).toUri();
+        return ResponseEntity.created(uri).body(patientResponse);
     }
 
     @GetMapping("/listAll")
@@ -34,15 +37,19 @@ public class PatientController {
 
     @PutMapping("/update")
     @Transactional
-    public ResponseEntity<?> updatePatientById(@RequestBody @Valid UpdatePatientRequest updatePatientRequest){
-        patientService.updatePatientById(updatePatientRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PatientResponse> updatePatientById(@RequestBody @Valid UpdatePatientRequest updatePatientRequest){
+        return ResponseEntity.ok(patientService.updatePatientById(updatePatientRequest));
     }
 
     @DeleteMapping("/inactivate/{id}")
     @Transactional
     public ResponseEntity<?> inactivatePatient(@PathVariable Long id){
         patientService.inactivatePatient(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/get-patient-by-id/{id}")
+    public ResponseEntity<PatientResponse> getDoctorById(@PathVariable Long id){
+        return ResponseEntity.ok(patientService.getDoctorById(id));
     }
 }

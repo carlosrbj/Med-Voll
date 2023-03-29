@@ -1,6 +1,7 @@
 package com.hsob.med_voll.service;
 
 import com.hsob.med_voll.dto.schedule.AvailableScheduleResponse;
+import com.hsob.med_voll.dto.schedule.CreateScheduleRequest;
 import com.hsob.med_voll.model.schedule.Schedule;
 import com.hsob.med_voll.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ScheduleService {
@@ -39,14 +41,29 @@ public class ScheduleService {
         return false;
     }
 
-    public void populateAvailableSchedules(Integer quantity){
+    public List<AvailableScheduleResponse> populateAvailableSchedules(Integer quantity){
         List<LocalDateTime> dates = createBookings(quantity);
         List<Schedule> schedules = new ArrayList<>();
+        List<AvailableScheduleResponse> response = new ArrayList<>();
         dates.forEach(h -> schedules.add(new Schedule(h, "AVAILABLE")));
-        schedules.forEach(s -> scheduleRepository.save(s));
+        schedules.forEach(s -> {
+            response.add(new AvailableScheduleResponse(s));
+            scheduleRepository.save(s);
+        });
+
+        return response;
     }
 
     public Page<AvailableScheduleResponse> getAvailableSchedules(Pageable pageable) {
         return scheduleRepository.findAllByStatus(pageable,"AVAILABLE").map(AvailableScheduleResponse::new);
+    }
+
+    public Schedule scheduleAppointment(CreateScheduleRequest createScheduleRequest) {
+        Optional<Schedule> schedule = scheduleRepository.findById(createScheduleRequest.schedule_id());
+        if (schedule.isPresent()){
+
+        }
+
+        return new Schedule();
     }
 }

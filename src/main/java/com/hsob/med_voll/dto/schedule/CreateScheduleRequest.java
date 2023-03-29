@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreateScheduleRequest(
         @NotNull
-        Long id,
+        Long schedule_id,
         @NotBlank
         String patient_id,
         @NotBlank

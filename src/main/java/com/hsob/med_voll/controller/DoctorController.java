@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Optional;
 
@@ -24,9 +25,10 @@ public class DoctorController {
 
     @PostMapping("/register")
     @Transactional
-    public ResponseEntity<?> saveNewDoctor(@RequestBody @Valid DoctorRequest doctorRequest){
-        doctorsService.saveNewDoctor(doctorRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<DoctorResponse> saveNewDoctor(@RequestBody @Valid DoctorRequest doctorRequest, UriComponentsBuilder uriBuilder){
+        var doctorResponse = doctorsService.saveNewDoctor(doctorRequest);
+        var uri = uriBuilder.path("/doctors/register/{id}").buildAndExpand(doctorResponse).toUri();
+        return ResponseEntity.created(uri).body(doctorResponse);
     }
 
     @GetMapping("/listAll")
@@ -37,9 +39,8 @@ public class DoctorController {
 
     @PutMapping("/update")
     @Transactional
-    public ResponseEntity<?> updateDoctorbyid(@RequestBody @Valid UpdateDoctorRequest updateDoctorRequest){
-        doctorsService.updateDoctorById(updateDoctorRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<DoctorResponse> updateDoctorbyid(@RequestBody @Valid UpdateDoctorRequest updateDoctorRequest){
+        return ResponseEntity.ok(doctorsService.updateDoctorById(updateDoctorRequest));
     }
 
 
@@ -47,13 +48,13 @@ public class DoctorController {
     @Transactional
     public ResponseEntity<?> deleteDoctorById(@PathVariable Long id){
         doctorsService.deleteDoctorById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 
-
-
-
-
+    @GetMapping("/get-doctor-by-id/{id}")
+    public ResponseEntity<DoctorResponse> getDoctorById(@PathVariable Long id){
+        return ResponseEntity.ok(doctorsService.getDoctorById(id));
+    }
 
 }

@@ -8,7 +8,9 @@ import com.hsob.med_voll.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 public class PatientService {
@@ -16,9 +18,11 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-    public void saveNewpatient(PatientRequest patientRequest) {
+    public PatientResponse saveNewpatient(PatientRequest patientRequest) {
         try {
-            patientRepository.save(new Patient(patientRequest));
+            var patient = new Patient(patientRequest);
+            patientRepository.save(patient);
+            return new PatientResponse(patient);
         } catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
@@ -28,13 +32,19 @@ public class PatientService {
         return patientRepository.findAllByStatus(pageable, "ACTIVE").map(PatientResponse::new);
     }
 
-    public void updatePatientById(UpdatePatientRequest updatePatientRequest) {
+    public PatientResponse updatePatientById(UpdatePatientRequest updatePatientRequest) {
         var patient = patientRepository.getReferenceById(updatePatientRequest.id());
         patient.updateInfo(updatePatientRequest);
+        return new PatientResponse(patient);
     }
 
     public void inactivatePatient(Long id) {
         var patient = patientRepository.getReferenceById(id);
         patient.inactivate();
+    }
+
+    public PatientResponse getDoctorById(Long id) {
+        var patient = patientRepository.findById(id);
+       return patient.map(PatientResponse::new).orElseGet(() -> new PatientResponse(new Patient()));
     }
 }
